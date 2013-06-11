@@ -1,4 +1,3 @@
-
 class BubbleChart
   constructor: (data) ->
     @data = data
@@ -12,8 +11,8 @@ class BubbleChart
     # used
     @center = {x: @width / 2, y: @height / 2}
     @year_centers = {
-      "2008": {x: @width / 3, y: @height / 2},
-      "2009": {x: @width / 2, y: @height / 2},
+      "1964": {x: @width / 3, y: @height / 2},
+      "1888": {x: @width / 2, y: @height / 2},
       "2010": {x: 2 * @width / 3, y: @height / 2}
     }
 
@@ -157,7 +156,7 @@ class BubbleChart
 
   # Method to display year titles
   display_years: () =>
-    years_x = {"2008": 160, "2009": @width / 2, "2010": @width - 160}
+    years_x = {"1964": 160, "1888": @width / 2, "2010": @width - 160}
     years_data = d3.keys(years_x)
     years = @vis.selectAll(".years")
       .data(years_data)
