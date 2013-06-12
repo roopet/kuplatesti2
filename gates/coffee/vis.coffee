@@ -199,8 +199,8 @@ $ ->
     chart.display_by_group()
   root.toggle_view = (view_type) =>
     if view_type == 'group'
-      root.display_year()
+      root.display_group()
     else
       root.display_all()
 
-  d3.csv "data/mates_money.csv", render_vis
+  d3.csv "data/gates_money.csv", render_vis
