@@ -156,12 +156,12 @@ class BubbleChart
 
   # Method to display year titles
   display_groups: () =>
-    groups_x = {"Matkailu": 160, "Yritys": @width / 2, "Hyvinvointi": @width - 160, "Kaivannais": 160 }
+    groups_x = {"Matkailu": @width / 3, "Yritys": @width / 2, "Hyvinvointi": 2 * @width / 3 , "Kaivannais": @width / 3 }
     groups_data = d3.keys(groups_x)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
       
-    groups_y = {"Matkailu": 160, "Yritys": @height / 2, "Hyvinvointi": @height - 160, "Kaivannais": @height / 4 }
+    groups_y = {"Matkailu": @height / 4, "Yritys": @height / 4, "Hyvinvointi": @height / 4, "Kaivannais": @height / 4 }
     groups_data = d3.keys(groups_y)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
