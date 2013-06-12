@@ -14,7 +14,7 @@ class BubbleChart
       "Matkailu": {x: @width / 3, y: @height / 2},
       "Yritys": {x: @width / 2, y: @height / 2},
       "Hyvinvointi": {x: 2 * @width / 3, y: @height / 2}
-      "Kaivannais": {x: @width / 3, y: @height / 4}
+      "Kaivannais": {x: @width / 3, y: @height / -4}
     }
 
     # used when setting up force and
