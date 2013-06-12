@@ -14,7 +14,7 @@ class BubbleChart
       "Matkailu": {x: @width / 3, y: @height / 2},
       "Yritys": {x: @width / 2, y: @height / 2},
       "Hyvinvointi": {x: 2 * @width / 3, y: @height / 2}
-      "Kaivannais": {x: @width / 3, y: @height / -4}
+      "Kaivannais": {x: @width / 3, y: @height / 20}
     }
 
     # used when setting up force and
@@ -156,7 +156,7 @@ class BubbleChart
 
   # Method to display year titles
   display_groups: () =>
-    groups_x = {"Matkailu": 160, "Yritys": @width / 2, "Hyvinvointi": @width - 160, "Kaivannais": @width / 4 }
+    groups_x = {"Matkailu": 160, "Yritys": @width / 2, "Hyvinvointi": @width - 160, "Kaivannais": @height / 20 }
     groups_data = d3.keys(groups_x)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
@@ -177,7 +177,7 @@ class BubbleChart
     content = "<span class=\"name\">Hanke:</span><span class=\"value\"> #{data.name}</span><br/>"
     content +="<span class=\"name\">EU ja valtion tuki:</span><span class=\"value\"> $#{addCommas(data.value)}</span><br/>"
     content +="<span class=\"name\">Klusteri:</span><span class=\"value\"> #{data.group}</span><br/>"
-    content +="<span class=\"name\">Rahoittava viranomainen:</span><span class=\"value\"> #{data.organization}</span>"
+    content +="<span class=\"name\">Viranomainen:</span><span class=\"value\"> #{data.organization}</span>"
     @tooltip.showTooltip(content,d3.event)
 
 
