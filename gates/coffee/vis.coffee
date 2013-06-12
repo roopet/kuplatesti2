@@ -15,7 +15,8 @@ class BubbleChart
       "Yritys": {x: @width / 2, y: @height / 4},
       "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4}
       "Kaivannais": {x: @width / 3, y: 2 * @height / 4}
-      
+    }
+    
     @center = {x: @width / 2, y: @height / 2}
     @organization_centers = {
       "PKMKL": {x: @width / 3, y: @height / 4},
@@ -183,13 +184,6 @@ class BubbleChart
   hide_groups: () =>
     groups = @vis.selectAll(".groups").remove()
     
-    # Moves all circles towards the @center
-  # of the visualization
-  move_towards_center: (alpha) =>
-    (d) =>
-      d.x = d.x + (@center.x - d.x) * (@damper + 0.02) * alpha
-      d.y = d.y + (@center.y - d.y) * (@damper + 0.02) * alpha
-
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
   display_by_organization: () =>
@@ -262,9 +256,15 @@ $ ->
     chart.display_organization_all()
   root.display_group = () =>
     chart.display_by_group()
+  root.display_organization = () =>
+      chart.display_by_organization
   root.toggle_view = (view_type) =>
     if view_type == 'group'
       root.display_group()
+    else
+      root.display_all()
+    if view_type == 'organization'
+      root.display_organization()
     else
       root.display_all()
 
