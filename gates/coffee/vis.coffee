@@ -2,7 +2,7 @@ class BubbleChart
   constructor: (data) ->
     @data = data
     @width = 940
-    @height = 700
+    @height = 600
 
     @tooltip = CustomTooltip("gates_tooltip", 240)
 
@@ -15,6 +15,12 @@ class BubbleChart
       "Yritys": {x: @width / 2, y: @height / 4},
       "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4}
       "Kaivannais": {x: @width / 3, y: 2 * @height / 4}
+      
+    @center = {x: @width / 2, y: @height / 2}
+    @organization_centers = {
+      "PKMKL": {x: @width / 3, y: @height / 4},
+      "ELY": {x: @width / 2, y: @height / 4},
+      "TEKES": {x: 2 * @width / 3, y: @height / 4}
     }
 
     # used when setting up force and
@@ -176,6 +182,58 @@ class BubbleChart
   # Method to hide year titiles
   hide_groups: () =>
     groups = @vis.selectAll(".groups").remove()
+    
+    # Moves all circles towards the @center
+  # of the visualization
+  move_towards_center: (alpha) =>
+    (d) =>
+      d.x = d.x + (@center.x - d.x) * (@damper + 0.02) * alpha
+      d.y = d.y + (@center.y - d.y) * (@damper + 0.02) * alpha
+
+  # sets the display of bubbles to be separated
+  # into each year. Does this by calling move_towards_year
+  display_by_organization: () =>
+    @force.gravity(@layout_gravity)
+      .charge(this.charge)
+      .friction(0.9)
+      .on "tick", (e) =>
+        @circles.each(this.move_towards_organization(e.alpha))
+          .attr("cx", (d) -> d.x)
+          .attr("cy", (d) -> d.y)
+    @force.start()
+
+    this.display_organization()
+
+  # move all circles to their associated @year_centers 
+  move_towards_organization: (alpha) =>
+    (d) =>
+      target = @organization_centers[d.group]
+      d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
+      d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
+
+  # Method to display year titles
+  display_organizations: () =>
+    organizations_x = {"PKMKL": @width / 3, "ELY": @width / 2, "TEKES": 2 * @width / 3 }
+    organizations_data = d3.keys(organizations_x)
+    organizations = @vis.selectAll(".organizations")
+      .data(organizations_data)
+      
+    organizations_y = {"PKMKL": @height / 3, "ELY": @height / 2, "TEKES": 2 * @height / 3 }
+    organizations_data = d3.keys(organizations_y)
+    organizations = @vis.selectAll(".organizations")
+      .data(organizations_data)
+
+    organizations.enter().append("text")
+      .attr("class", "organizations")
+      .attr("x", (d) => organizations_x[d] )
+      .attr("y", (d) => organizations_y[d] )
+      .attr("text-anchor", "middle")
+      .text((d) -> d)
+
+  # Method to hide year titiles
+  hide_organizations: () =>
+    organizations = @vis.selectAll(".organizations").remove(
+
 
   show_details: (data, i, element) =>
     d3.select(element).attr("stroke", "black")
