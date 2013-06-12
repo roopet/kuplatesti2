@@ -10,10 +10,10 @@ class BubbleChart
     # depending on which view is currently being
     # used
     @center = {x: @width / 2, y: @height / 2}
-    @year_centers = {
-      "2007": {x: @width / 3, y: @height / 2},
-      "2008": {x: @width / 2, y: @height / 2},
-      "2009": {x: 2 * @width / 3, y: @height / 2}
+    @group_centers = {
+      "Matkailu": {x: @width / 3, y: @height / 2},
+      "Yritys": {x: @width / 2, y: @height / 2},
+      "Hyvinvointi": {x: 2 * @width / 3, y: @height / 2}
     }
 
     # used when setting up force and
@@ -29,7 +29,7 @@ class BubbleChart
 
     # nice looking colors - no reason to buck the trend
     @fill_color = d3.scale.ordinal()
-      .domain(["eakr", "esr", "maaseutu"])
+      .domain(["PKMKL", "ELY", "TEKES"])
       .range(["#FF0000", "#0000FF", "#008000"])
 
     # use the max total_amount in the data as the max in the scale's domain
@@ -52,7 +52,6 @@ class BubbleChart
         name: d.grant_title
         org: d.organization
         group: d.group
-        year: d.start_year
         x: Math.random() * 900
         y: Math.random() * 800
       }
@@ -80,9 +79,9 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
-      .attr("fill", (d) => @fill_color(d.group))
+      .attr("fill", (d) => @fill_color(d.organization))
       .attr("stroke-width", 2)
-      .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
+      .attr("stroke", (d) => d3.rgb(@fill_color(d.organization)).darker())
       .attr("id", (d) -> "bubble_#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
@@ -124,7 +123,7 @@ class BubbleChart
           .attr("cy", (d) -> d.y)
     @force.start()
 
-    this.hide_years()
+    this.hide_groups()
 
   # Moves all circles towards the @center
   # of the visualization
@@ -135,53 +134,53 @@ class BubbleChart
 
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
-  display_by_year: () =>
+  display_by_group: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(0.9)
       .on "tick", (e) =>
-        @circles.each(this.move_towards_year(e.alpha))
+        @circles.each(this.move_towards_group(e.alpha))
           .attr("cx", (d) -> d.x)
           .attr("cy", (d) -> d.y)
     @force.start()
 
-    this.display_years()
+    this.display_groups()
 
   # move all circles to their associated @year_centers 
-  move_towards_year: (alpha) =>
+  move_towards_group: (alpha) =>
     (d) =>
-      target = @year_centers[d.year]
+      target = @group_centers[d.group]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
   # Method to display year titles
-  display_years: () =>
-    years_x = {"2007": 160, "2008": @width / 2, "2009": @width - 160}
-    years_data = d3.keys(years_x)
-    years = @vis.selectAll(".years")
-      .data(years_data)
+  display_groups: () =>
+    groups_x = {"Matkailu": 160, "Yritys": @width / 2, "Hyvinvointi": @width - 160}
+    groups_data = d3.keys(groups_x)
+    groups = @vis.selectAll(".groups")
+      .data(groups_data)
 
-    years.enter().append("text")
-      .attr("class", "years")
-      .attr("x", (d) => years_x[d] )
+    groups.enter().append("text")
+      .attr("class", "groups")
+      .attr("x", (d) => groups_x[d] )
       .attr("y", 40)
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
   # Method to hide year titiles
-  hide_years: () =>
-    years = @vis.selectAll(".years").remove()
+  hide_groups: () =>
+    groups = @vis.selectAll(".groups").remove()
 
   show_details: (data, i, element) =>
     d3.select(element).attr("stroke", "black")
     content = "<span class=\"name\">Title:</span><span class=\"value\"> #{data.name}</span><br/>"
     content +="<span class=\"name\">Amount:</span><span class=\"value\"> $#{addCommas(data.value)}</span><br/>"
-    content +="<span class=\"name\">Year:</span><span class=\"value\"> #{data.year}</span>"
+    content +="<span class=\"name\">Year:</span><span class=\"value\"> #{data.group}</span>"
     @tooltip.showTooltip(content,d3.event)
 
 
   hide_details: (data, i, element) =>
-    d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
+    d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.organization)).darker())
     @tooltip.hideTooltip()
 
 
@@ -195,11 +194,11 @@ $ ->
     chart.start()
     root.display_all()
   root.display_all = () =>
-    chart.display_group_all()
-  root.display_year = () =>
-    chart.display_by_year()
+    chart.display_organization_all()
+  root.display_group = () =>
+    chart.display_by_group()
   root.toggle_view = (view_type) =>
-    if view_type == 'year'
+    if view_type == 'group'
       root.display_year()
     else
       root.display_all()
