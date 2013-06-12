@@ -173,9 +173,9 @@ class BubbleChart
 
   show_details: (data, i, element) =>
     d3.select(element).attr("stroke", "black")
-    content = "<span class=\"name\">Title:</span><span class=\"value\"> #{data.name}</span><br/>"
-    content +="<span class=\"name\">Amount:</span><span class=\"value\"> $#{addCommas(data.value)}</span><br/>"
-    content +="<span class=\"name\">Year:</span><span class=\"value\"> #{data.group}</span>"
+    content = "<span class=\"name\">Hanke:</span><span class=\"value\"> #{data.name}</span><br/>"
+    content +="<span class=\"name\">EU ja valtion tuki:</span><span class=\"value\"> $#{addCommas(data.value)}</span><br/>"
+    content +="<span class=\"name\">Rahoittava viranomainen:</span><span class=\"value\"> #{data.group}</span>"
     @tooltip.showTooltip(content,d3.event)
 
 
