@@ -113,7 +113,7 @@ class BubbleChart
 
   # Sets up force layout to display
   # all nodes in one circle.
-  display_group_all: () =>
+  display_organization_all: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(0.9)
@@ -195,7 +195,7 @@ $ ->
     chart.start()
     root.display_all()
   root.display_all = () =>
-    chart.display_group_all()
+    chart.display_organization_all()
   root.display_group = () =>
     chart.display_by_group()
   root.toggle_view = (view_type) =>
