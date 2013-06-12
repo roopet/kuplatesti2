@@ -30,7 +30,7 @@ class BubbleChart
     # nice looking colors - no reason to buck the trend
     @fill_color = d3.scale.ordinal()
       .domain(["eakr", "esr", "maaseutu"])
-      .range(["#FF0000", "#0000FF", "##008000"])
+      .range(["#FF0000", "#0000FF", "#008000"])
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.total_amount))
