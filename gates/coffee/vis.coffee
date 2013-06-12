@@ -11,9 +11,9 @@ class BubbleChart
     # used
     @center = {x: @width / 2, y: @height / 2}
     @year_centers = {
-      "1964": {x: @width / 3, y: @height / 2},
-      "1888": {x: @width / 2, y: @height / 2},
-      "2010": {x: 2 * @width / 3, y: @height / 2}
+      "2007": {x: @width / 3, y: @height / 2},
+      "2008": {x: @width / 2, y: @height / 2},
+      "2009": {x: 2 * @width / 3, y: @height / 2}
     }
 
     # used when setting up force and
@@ -29,8 +29,8 @@ class BubbleChart
 
     # nice looking colors - no reason to buck the trend
     @fill_color = d3.scale.ordinal()
-      .domain(["low", "medium", "high"])
-      .range(["#d84b2a", "#beccae", "#7aa25c"])
+      .domain(["eakr", "esr", "maaseutu"])
+      .range(["#FF0000", "#0000FF", "##008000"])
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.total_amount))
@@ -156,7 +156,7 @@ class BubbleChart
 
   # Method to display year titles
   display_years: () =>
-    years_x = {"1964": 160, "1888": @width / 2, "2010": @width - 160}
+    years_x = {"2007": 160, "2008": @width / 2, "2009": @width - 160}
     years_data = d3.keys(years_x)
     years = @vis.selectAll(".years")
       .data(years_data)
