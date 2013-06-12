@@ -1,8 +1,8 @@
 class BubbleChart
   constructor: (data) ->
     @data = data
-    @width = 1100
-    @height = 900
+    @width = 940
+    @height = 600
 
     @tooltip = CustomTooltip("gates_tooltip", 240)
 
@@ -161,7 +161,7 @@ class BubbleChart
     groups = @vis.selectAll(".groups")
       .data(groups_data)
       
-    groups_y = {"Matkailu": @height / 4, "Yritys": @height / 4, "Hyvinvointi": @height / 4, "Kaivannais": @height / 4 }
+    groups_y = {"Matkailu": @height / 4 + 50, "Yritys": @height / 4 + 50, "Hyvinvointi": @height / 4 + 50, "Kaivannais": 2 * @height / 4 + 50 }
     groups_data = d3.keys(groups_y)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
