@@ -194,7 +194,7 @@ $ ->
     chart.start()
     root.display_all()
   root.display_all = () =>
-    chart.display_organization_all()
+    chart.display_group_all()
   root.display_group = () =>
     chart.display_by_group()
   root.toggle_view = (view_type) =>
