@@ -11,10 +11,10 @@ class BubbleChart
     # used
     @center = {x: @width / 2, y: @height / 2}
     @group_centers = {
-      "Matkailu": {x: @width / 3, y: @height / 2},
-      "Yritys": {x: @width / 2, y: @height / 2},
-      "Hyvinvointi": {x: 2 * @width / 3, y: @height / 2}
-      "Kaivannais": {x: @width / 3, y: @height / 20}
+      "Matkailu": {x: @width / 3, y: @height / 4},
+      "Yritys": {x: @width / 2, y: @height / 4},
+      "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4}
+      "Kaivannais": {x: @width / 3, y: 2 * @height / 4}
     }
 
     # used when setting up force and
@@ -156,15 +156,20 @@ class BubbleChart
 
   # Method to display year titles
   display_groups: () =>
-    groups_x = {"Matkailu": 160, "Yritys": @width / 2, "Hyvinvointi": @width - 160, "Kaivannais": @height / 20 }
+    groups_x = {"Matkailu": 160, "Yritys": @width / 2, "Hyvinvointi": @width - 160, "Kaivannais": 160 }
     groups_data = d3.keys(groups_x)
+    groups = @vis.selectAll(".groups")
+      .data(groups_data)
+      
+    groups_y = {"Matkailu": 160, "Yritys": @height / 2, "Hyvinvointi": @height - 160, "Kaivannais": @height / 4 }
+    groups_data = d3.keys(groups_y)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
 
     groups.enter().append("text")
       .attr("class", "groups")
       .attr("x", (d) => groups_x[d] )
-      .attr("y", 40)
+      .attr("y", (d) => groups_y[d] )
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
