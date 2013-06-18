@@ -32,6 +32,7 @@ class BubbleChart
     @fill_color = d3.scale.ordinal()
       .domain(["low", "medium", "high"])
       .range(["#d84b2a", "#beccae", "#7aa25c"])
+      .attr("fill", function(d) { return color(d.organization); });
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.total_amount))
