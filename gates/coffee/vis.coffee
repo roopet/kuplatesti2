@@ -150,7 +150,7 @@ class BubbleChart
   # move all circles to their associated @year_centers 
   move_towards_klusteri: (alpha) =>
     (d) =>
-      target = @klusteri_centers[d.group]
+      target = @klusteri_centers[d.klusteri]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
