@@ -10,7 +10,7 @@ class BubbleChart
     # depending on which view is currently being
     # used
     @center = {x: @width / 2, y: @height / 2}
-    @group_centers = {
+    @klusteri_centers = {
       "Matkailu": {x: @width / 3, y: @height / 4},
       "Yritys": {x: @width / 2, y: @height / 4},
       "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4}
@@ -124,7 +124,7 @@ class BubbleChart
           .attr("cy", (d) -> d.y)
     @force.start()
 
-    this.hide_groups()
+    this.hide_klusteris()
 
   # Moves all circles towards the @center
   # of the visualization
@@ -150,7 +150,7 @@ class BubbleChart
   # move all circles to their associated @year_centers 
   move_towards_klusteri: (alpha) =>
     (d) =>
-      target = @group_centers[d.group]
+      target = @klusteri_centers[d.group]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
