@@ -32,7 +32,6 @@ class BubbleChart
     @fill_color = d3.scale.ordinal()
       .domain(["low", "medium", "high"])
       .range(["#d84b2a", "#beccae", "#7aa25c"])
-      .attr("fill", (d) -> color d.organization
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.total_amount))
@@ -52,8 +51,8 @@ class BubbleChart
         radius: @radius_scale(parseInt(d.total_amount))
         value: d.total_amount
         name: d.grant_title
-        org: d.organization
-        group: d.group
+        org: d.organisaatio
+        klusteri: d.klusteri
         x: Math.random() * 900
         y: Math.random() * 800
       }
@@ -81,9 +80,9 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
-      .attr("fill", (d) => @fill_color(d.organization))
+      .attr("fill", (d) => @fill_color(d.organisaatio))
       .attr("stroke-width", 2)
-      .attr("stroke", (d) => d3.rgb(@fill_color(d.organization)).darker())
+      .attr("stroke", (d) => d3.rgb(@fill_color(d.organisaatio)).darker())
       .attr("id", (d) -> "bubble_#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
@@ -115,7 +114,7 @@ class BubbleChart
 
   # Sets up force layout to display
   # all nodes in one circle.
-  display_organization_all: () =>
+  display_organisaatio_all: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(0.9)
@@ -136,59 +135,59 @@ class BubbleChart
 
   # sets the display of bubbles to be separated
   # into each year. Does this by calling move_towards_year
-  display_by_group: () =>
+  display_by_klusteri: () =>
     @force.gravity(@layout_gravity)
       .charge(this.charge)
       .friction(0.9)
       .on "tick", (e) =>
-        @circles.each(this.move_towards_group(e.alpha))
+        @circles.each(this.move_towards_klusteri(e.alpha))
           .attr("cx", (d) -> d.x)
           .attr("cy", (d) -> d.y)
     @force.start()
 
-    this.display_groups()
+    this.display_klusteris()
 
   # move all circles to their associated @year_centers 
-  move_towards_group: (alpha) =>
+  move_towards_klusteri: (alpha) =>
     (d) =>
       target = @group_centers[d.group]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
   # Method to display year titles
-  display_groups: () =>
-    groups_x = {"Matkailu": @width / 3, "Yritys": @width / 2, "Hyvinvointi": 2 * @width / 3 , "Kaivannais": @width / 3 }
-    groups_data = d3.keys(groups_x)
-    groups = @vis.selectAll(".groups")
-      .data(groups_data)
+  display_klusteris: () =>
+    klusteris_x = {"Matkailu": @width / 3, "Yritys": @width / 2, "Hyvinvointi": 2 * @width / 3 , "Kaivannais": @width / 3 }
+    klusteris_data = d3.keys(klusteris_x)
+    klusteris = @vis.selectAll(".klusteris")
+      .data(klusteris_data)
       
-    groups_y = {"Matkailu": @height / 4 + 50, "Yritys": @height / 4 + 50, "Hyvinvointi": @height / 4 + 50, "Kaivannais": 2 * @height / 4 + 50 }
-    groups_data = d3.keys(groups_y)
-    groups = @vis.selectAll(".groups")
-      .data(groups_data)
+    klusteris_y = {"Matkailu": @height / 4 + 50, "Yritys": @height / 4 + 50, "Hyvinvointi": @height / 4 + 50, "Kaivannais": 2 * @height / 4 + 50 }
+    klusteris_data = d3.keys(klusteris_y)
+    klusteris = @vis.selectAll(".klusteris")
+      .data(klusteris_data)
 
-    groups.enter().append("text")
-      .attr("class", "groups")
-      .attr("x", (d) => groups_x[d] )
-      .attr("y", (d) => groups_y[d] )
+    klusteris.enter().append("text")
+      .attr("class", "klusteris")
+      .attr("x", (d) => klusteris_x[d] )
+      .attr("y", (d) => klusteris_y[d] )
       .attr("text-anchor", "middle")
       .text((d) -> d)
 
   # Method to hide year titiles
-  hide_groups: () =>
-    groups = @vis.selectAll(".groups").remove()
+  hide_klusteris: () =>
+    klusteris = @vis.selectAll(".klusteris").remove()
 
   show_details: (data, i, element) =>
     d3.select(element).attr("stroke", "black")
     content = "<span class=\"name\">Hanke:</span><span class=\"value\"> #{data.name}</span><br/>"
     content +="<span class=\"name\">EU ja valtion tuki:</span><span class=\"value\"> $#{addCommas(data.value)}</span><br/>"
-    content +="<span class=\"name\">Klusteri:</span><span class=\"value\"> #{data.group}</span><br/>"
-    content +="<span class=\"name\">Viranomainen:</span><span class=\"value\"> #{data.organization}</span>"
+    content +="<span class=\"name\">Klusteri:</span><span class=\"value\"> #{data.klusteri}</span><br/>"
+    content +="<span class=\"name\">Viranomainen:</span><span class=\"value\"> #{data.organisaatio}</span>"
     @tooltip.showTooltip(content,d3.event)
 
 
   hide_details: (data, i, element) =>
-    d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.organization)).darker())
+    d3.select(element).attr("stroke", (d) => d3.rgb(@fill_color(d.organisaatio)).darker())
     @tooltip.hideTooltip()
 
 
@@ -202,12 +201,12 @@ $ ->
     chart.start()
     root.display_all()
   root.display_all = () =>
-    chart.display_organization_all()
-  root.display_group = () =>
-    chart.display_by_group()
+    chart.display_organisaatio_all()
+  root.display_klusteri = () =>
+    chart.display_by_klusteri()
   root.toggle_view = (view_type) =>
-    if view_type == 'group'
-      root.display_group()
+    if view_type == 'klusteri'
+      root.display_klusteri()
     else
       root.display_all()
 
