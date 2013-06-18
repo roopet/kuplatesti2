@@ -83,9 +83,9 @@ class BubbleChart
     # see transition below
     @circles.enter().append("circle")
       .attr("r", 0)
-      .attr("fill", (d) => @fill_color(d.organization))
+      .attr("fill", (d) => @fill_color(d.group))
       .attr("stroke-width", 2)
-      .attr("stroke", (d) => d3.rgb(@fill_color(d.organization)).darker())
+      .attr("stroke", (d) => d3.rgb(@fill_color(d.group)).darker())
       .attr("id", (d) -> "bubble_#{d.id}")
       .on("mouseover", (d,i) -> that.show_details(d,i,this))
       .on("mouseout", (d,i) -> that.hide_details(d,i,this))
