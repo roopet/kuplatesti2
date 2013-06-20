@@ -29,7 +29,7 @@ class BubbleChart
     @circles = null
 
     # nice looking colors - no reason to buck the trend
-    @fill_color = d3.scale.linear().domain([1,2,3]).range(["red", "green", "blue"])
+    @fill_color = d3.scale.linear().domain([1,2,3]).range(["#1F45FC", "#437C17", "#E66C2C"])
 
     # use the max total_amount in the data as the max in the scale's domain
     max_amount = d3.max(@data, (d) -> parseInt(d.total_amount))
