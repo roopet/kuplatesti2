@@ -11,10 +11,10 @@ class BubbleChart
     # used
     @center = {x: @width / 2, y: @height / 2}
     @group_centers = {
-      "Matkailu": {x: @width / 3, y: @height / 4},
-      "Yritysten toimintaympäristön kehittäminen": {x: @width / 2, y: @height / 4},
-      "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4},
-      "Kivi ja kaivannais": {x: @width / 3, y: 2 * @height / 4}
+      "Matkailu": {x: 300, y: @height / 4},
+      "Yritysten toimintaympäristön kehittäminen": {x: 600, y: @height / 4},
+      "Hyvinvointi": {x: 900, y: @height / 4},
+      "Kivi ja kaivannais": {x: 300, y: 2 * @height / 4}
       
     }
 
@@ -158,10 +158,10 @@ class BubbleChart
   # Method to display year titles
   display_groups: () =>
     groups_x = {
-      "Matkailu": @width / 3, 
-      "Yritysten toimintaympäristön kehittäminen": @width / 2, 
-      "Hyvinvointi": 2 * @width / 3 , 
-      "Kivi ja kaivannais": @width / 3 }
+      "Matkailu": 300, 
+      "Yritysten toimintaympäristön kehittäminen": 600, 
+      "Hyvinvointi": 900, 
+      "Kivi ja kaivannais": 300 }
     groups_data = d3.keys(groups_x)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
