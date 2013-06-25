@@ -1,8 +1,8 @@
 class BubbleChart
   constructor: (data) ->
     @data = data
-    @width = 940
-    @height = 600
+    @width = 1200
+    @height = 900
 
     @tooltip = CustomTooltip("gates_tooltip", 240)
 
@@ -13,7 +13,7 @@ class BubbleChart
     @group_centers = {
       "Matkailu": {x: @width / 3, y: @height / 4},
       "Yritysten toimintaympäristön kehittäminen": {x: @width / 2, y: @height / 4},
-      "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4}
+      "Hyvinvointi": {x: 2 * @width / 3, y: @height / 4},
       "Kivi ja kaivannais": {x: @width / 3, y: 2 * @height / 4}
       
     }
@@ -157,12 +157,20 @@ class BubbleChart
 
   # Method to display year titles
   display_groups: () =>
-    groups_x = {"Matkailu": @width / 3, "Yritysten toimintaympäristön kehittäminen": @width / 2, "Hyvinvointi": 2 * @width / 3 , "Kivi ja kaivannais": @width / 3 }
+    groups_x = {
+      "Matkailu": @width / 3, 
+      "Yritysten toimintaympäristön kehittäminen": @width / 2, 
+      "Hyvinvointi": 2 * @width / 3 , 
+      "Kivi ja kaivannais": @width / 3 }
     groups_data = d3.keys(groups_x)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
       
-    groups_y = {"Matkailu": @height / 4 + 50, "Yritysten toimintaympäristön kehittäminen": @height / 4 + 50, "Hyvinvointi": @height / 4 + 50, "Kivi ja kaivannais": 2 * @height / 4 + 50 }
+    groups_y = {
+      "Matkailu": @height / 4 + 50, 
+      "Yritysten toimintaympäristön kehittäminen": @height / 4 + 50, 
+      "Hyvinvointi": @height / 4 + 50, 
+      "Kivi ja kaivannais": 2 * @height / 4 + 50 }
     groups_data = d3.keys(groups_y)
     groups = @vis.selectAll(".groups")
       .data(groups_data)
