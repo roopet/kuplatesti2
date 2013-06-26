@@ -256,6 +256,8 @@ $ ->
   root.toggle_view = (view_type) =>
     if view_type == 'group'
       root.display_group()
+      else if view_type == 'organization'
+      root.display_organization()
     else
       root.display_all()
 
