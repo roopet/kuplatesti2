@@ -17,11 +17,10 @@ class BubbleChart
       "Kaivannais": {x: @width / 3, y: 2 * @height / 4}
     }
     
-    @center = {x: @width / 2, y: @height / 2}
     @organization_centers = {
-      "PKMKL": {x: @width / 3, y: @height / 4},
-      "ELY": {x: @width / 2, y: @height / 4},
-      "TEKES": {x: 2 * @width / 3, y: @height / 4}
+      "1": {x: @width / 3, y: @height / 4},
+      "2": {x: @width / 2, y: @height / 4},
+      "3": {x: 2 * @width / 3, y: @height / 4}
     }
 
     # used when setting up force and
@@ -37,7 +36,7 @@ class BubbleChart
 
     # nice looking colors - no reason to buck the trend
     @fill_color = d3.scale.ordinal()
-      .domain(["low", "medium", "high"])
+      .domain(["1", "2", "3"])
       .range(["#d84b2a", "#beccae", "#7aa25c"])
 
     # use the max total_amount in the data as the max in the scale's domain
@@ -201,18 +200,18 @@ class BubbleChart
   # move all circles to their associated @year_centers 
   move_towards_organization: (alpha) =>
     (d) =>
-      target = @organization_centers[d.group]
+      target = @organization_centers[d.organization]
       d.x = d.x + (target.x - d.x) * (@damper + 0.02) * alpha * 1.1
       d.y = d.y + (target.y - d.y) * (@damper + 0.02) * alpha * 1.1
 
   # Method to display year titles
   display_organizations: () =>
-    organizations_x = {"PKMKL": @width / 3, "ELY": @width / 2, "TEKES": 2 * @width / 3 }
+    organizations_x = {"1": @width / 3, "2": @width / 2, "3": 2 * @width / 3 }
     organizations_data = d3.keys(organizations_x)
     organizations = @vis.selectAll(".organizations")
       .data(organizations_data)
       
-    organizations_y = {"PKMKL": @height / 3, "ELY": @height / 2, "TEKES": 2 * @height / 3 }
+    organizations_y = {"1": @height / 3, "2": @height / 2, "3": 2 * @height / 3 }
     organizations_data = d3.keys(organizations_y)
     organizations = @vis.selectAll(".organizations")
       .data(organizations_data)
@@ -226,7 +225,7 @@ class BubbleChart
 
   # Method to hide year titiles
   hide_organizations: () =>
-    organizations = @vis.selectAll(".organizations").remove(
+    organizations = @vis.selectAll(".organizations").remove()
 
 
   show_details: (data, i, element) =>
@@ -261,9 +260,7 @@ $ ->
   root.toggle_view = (view_type) =>
     if view_type == 'group'
       root.display_group()
-    else
-      root.display_all()
-    if view_type == 'organization'
+    else if view_type == 'organization'
       root.display_organization()
     else
       root.display_all()
