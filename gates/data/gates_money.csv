@@ -1,4 +1,4 @@
-ggrant_title,id,organization,total_amount,group
+grant_title,id,organization,total_amount,group
 testihanke1,1,1,5000,Hyvinvointi
 testihanke2,2,2,6500,Hyvinvointi
 testihanke3,3,1,45000,Matkailu
